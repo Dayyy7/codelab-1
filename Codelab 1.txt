@@ -1,0 +1,48 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input
+        System.out.print("Nama: ");
+        String nama = scanner.nextLine();
+
+        System.out.print("Jenis Kelamin (L/P): ");
+        char jenisKelamin = scanner.next().charAt(0);
+
+        System.out.print("Tanggal Lahir (yyyy-mm-dd): ");
+        String tanggalLahirStr = scanner.next();
+
+        // Hitung dan Output
+        try {
+            // Menggunakan SimpleDateFormat untuk mengubah string tanggal lahir menjadi objek Date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date tanggalLahir = dateFormat.parse(tanggalLahirStr);
+
+            // Menghitung umur
+            long selisihWaktu = System.currentTimeMillis() - tanggalLahir.getTime();
+            int umurTahun = (int) (selisihWaktu / (1000L * 60 * 60 * 24 * 365));
+
+            // Menghitung sisa hari dan bulan
+            int sisaHari = (int) ((selisihWaktu % (1000L * 60 * 60 * 24 * 365)) / (1000L * 60 * 60 * 24));
+            int umurBulan = sisaHari / 30;
+
+            // Output
+            System.out.println("\nNama " + nama);
+            System.out.println("Jenis Kelamin " + (jenisKelamin == 'P' ? "Perempuan" : "Laki-Laki"));
+            System.out.println("Umur Anda: " + umurTahun + " tahun " + umurBulan + " bulan");
+
+        } catch (ParseException e) {
+            // Menangani kasus ketika input tanggal tidak sesuai format yang diharapkan
+            System.out.println("Format tanggal lahir tidak valid. Gunakan format yyyy-mm-dd.");
+        } finally {
+            // Menutup scanner untuk membebaskan sumber daya
+            scanner.close();
+        }
+    }
+}
